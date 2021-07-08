@@ -2,6 +2,9 @@
   "name": "whistle.mock",
   "version": "1.0.0",
   "description": "用js修改mock数据",
+  "scripts": {
+    "watch": "lack watch"
+  },
   "dependencies": {
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
@@ -11,6 +14,7 @@
     "koa-bodyparser": "^4.2.1",
     "koa-onerror": "^4.1.0",
     "koa-router": "^7.4.0",
-    "koa-static": "^5.0.0"
+    "koa-static": "^5.0.0",
+    "lack": "^1.2.0"
   }
 }

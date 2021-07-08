@@ -4,12 +4,12 @@
 2. 代理模式可以代理线上的接口，修改其中的字段再返回
 
 ## 使用插件
-- `git clone` 代码到本地
-- 首次加载：`w2 run` 自动加载当前目录下的所有插件
-- 常规使用：`w2 start` 正常开启whistle，查看插件输出：`w2 run` 
-- 在插件根目录运行 `lack watch` 如果没有lack，先安装 `npm install lack -g`，监听插件修改的变化，否则不会更新你修改的内容
-- 在rules.txt中配置代理api规则，这里也可以写在whistle-web-debugger的Rules中，效果相同，但优先级更低
-- 规则如 `product/info/list/v2 mock://`
+- `git clone` 拉取代码到本地
+- `npm install` 
+- `npm run watch` 监听插件修改的变化，否则不会更新你修改的内容
+- 首次加载：在插件目录下 `w2 run` 将会自动加载本插件到 whistle 到插件列表
+- 常规使用：`w2 start` 正常开启whistle；查看插件输出：`w2 run` 
+- 在 rules.txt 中配置代理api规则，也可以写在 whistle-web-debugger 的 Rules 中，效果相同，但 rules.txt 优先级更低，规则如 `product/info/list/v2 mock://`
 - 在/mock/api中新建js文件，编辑要mock的接口，会被自动引入，参考/mock/example/template模版
 - 模版提供两种mock方式，路由模式和代理模式，详见下方
 
