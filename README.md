@@ -1,0 +1,41 @@
+# whistle.mock
+自用的 whistle mock 插件，可以利用js来改变mock的数据。
+1. 常规的 mock 方式直接把返回数据写死，本插件可以用 js 批量修改数据字段，也可以读取请求体和入参，调用不同的数据修改逻辑
+2. 代理模式可以代理线上的接口，修改其中的字段再返回
+
+## 使用插件
+- `git clone` 代码到本地
+- 首次加载：`w2 run` 自动加载当前目录下的所有插件
+- 常规使用：`w2 start` 正常开启whistle，查看插件输出：`w2 run` 
+- 在插件根目录运行 `lack watch` 如果没有lack，先安装 `npm install lack -g`，监听插件修改的变化，否则不会更新你修改的内容
+- 在rules.txt中配置代理api规则，这里也可以写在whistle-web-debugger的Rules中，效果相同，但优先级更低
+- 规则如 `product/info/list/v2 mock://`
+- 在/mock/api中新建js文件，编辑要mock的接口，会被自动引入，参考/mock/example/template模版
+- 模版提供两种mock方式，路由模式和代理模式，详见下方
+
+## 路由模式
+常规的mock方式，可以使用js的能力来批量修改接口数据，比如统一修改接口返回的时间戳
+在某些有实时时间限制的需求中尤为重要（如未来预告，mock的时间戳会过期，又要重新改写）
+
+## 代理模式
+使用express-http-proxy中间件处理代理请求，可以在线上接口的基础上增加或删除字段，也可以做透明代理
+
+## 路由-代理模式
+适用于：所有数据都请求同一个接口，根据请求体方法名来调用不同的服务器方法
+
+例如xup，所有接口都请求vposRoutePostSUP方法，请求体中有serviceName字段区分调用方法；而且除了业务请求外，拉取基础数据也使用到这个接口；甚至还需要处理options请求；不能简单mock
+
+解决方法：
+通过路由模式，获取请求体中都方法名，判断是否需要mock
+- 若不需要mock，是基础数据请求，则传递到代理中间件处理，做透明代理
+- 若需要mock，则返回mock数据
+
+> 参考链接
+> whistle插件开发 http://wproxy.org/whistle/plugins.html
+
+### todos
+- 增加cli方式新增template
+
+### 开发插件
+- 停止正在运行的 whistle `whistle stop`
+- 开启 whistle 监听模式 `whistle run` 可以查看log
