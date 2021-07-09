@@ -14,13 +14,14 @@ function getProxy() {
 }
 router.post(url, (req, res, next) => {
   const { serviceName } = req.body
+  // 对特定对方法返回 mock 数据
   if (serviceName === 'LotteryActOspService.queryLotteryActPage') {
     const response = {
       a: 222
     }
     res.json(response)
   } else {
-    // 透明代理
+    // 其他方法进行透明代理
     proxyHost = req.originalReq.headers.host
     next()
   }

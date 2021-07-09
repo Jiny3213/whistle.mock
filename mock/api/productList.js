@@ -701,18 +701,16 @@ router.get(url, (req, res) => {
   })
   res.json(list)
 });
+
+// 代理
 const proxy = data => {
-  // 为返回的数据增加一个字段 
-  data.add = 'add some data'
-  // 不需要返回，改写data即可
-  console.log(data)
   data.data.products = data.data.products.map(item => {
-    item.couponFavPrice = '21'
+    item.couponFavPrice = '18'
     return item
   })
 }
 module.exports = {
-  type: 'router',
+  type: 'proxy',
   url,
   router: router,
   proxy: proxy

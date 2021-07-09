@@ -61,9 +61,9 @@ app.use('/', proxy(getProxy, {
   userResDecorator: function(proxyRes, proxyResData, userReq, userRes) {
     let data = JSON.parse(proxyResData.toString('utf8'));
     // 执行代理逻辑
-    proxyMap[currentUrl](data)
-    data.globalProxy = '此数据被增加了字段, 可以通过这种方式增删返回数据的字段, 这是全局修改的'
-    return JSON.stringify(data);
+    // data.globalProxy = '此数据被增加了字段, 可以通过这种方式增删返回数据的字段, 这是全局修改的'
+    const resData = proxyMap[currentUrl](data) || data
+    return JSON.stringify(resData);
   }
 }))
 
