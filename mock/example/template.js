@@ -1,7 +1,7 @@
 // mock 模版文件
 var express = require("express");
 var router = express.Router();
-const url = '/getProductList' // 要 mock 的接口，去除host的部分
+const url = '$url' // 要 mock 的接口，去除host的部分
 
 // 代理设置
 const proxy = data => {
@@ -27,7 +27,7 @@ router.post(url, (req, res) => {
 })
 
 module.exports = {
-  type: 'router', // 选择模式 router or proxy
+  type: '$type', // 选择模式 router or proxy
   url,
   router: router,
   proxy: proxy

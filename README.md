@@ -10,8 +10,11 @@
 - 首次加载：在插件目录下 `w2 run` 将会自动加载本插件到 whistle 到插件列表
 - 常规使用：`w2 start` 正常开启whistle；查看插件输出：`w2 run` 
 - 在 rules.txt 中配置代理api规则，也可以写在 whistle-web-debugger 的 Rules 中，效果相同，但 rules.txt 优先级更低，规则如 `product/info/list/v2 mock://`
-- 在/mock/api中新建js文件，编辑要mock的接口，会被自动引入，参考/mock/example/template模版
-- 模版提供两种mock方式，路由模式和代理模式，详见下方
+- 创建mock模版，编辑要mock的接口，会被自动引入
+  - 使用cli `npm run new` 根据指引创建模版文件(推荐)
+  - 在/mock/api中新建js文件，参考/mock/example/template模版
+
+有两种mock方式，路由模式和代理模式
 
 ## 路由模式
 常规的mock方式，可以使用js的能力来批量修改接口数据，比如统一修改接口返回的时间戳
@@ -31,10 +34,12 @@
 - 若需要mock，则返回mock数据
 
 > 参考链接
-> whistle插件开发 http://wproxy.org/whistle/plugins.html
+> whistle 插件开发 http://wproxy.org/whistle/plugins.html
+> express 文档
 
 ### todos
-- 增加cli方式新增template
+- 增加cli方式新增template done
+- 用js文件承载rules列表，监听变化并修改rules.txt
 
 ### 开发插件
 - 停止正在运行的 whistle `whistle stop`
