@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const url = '/vips-mobile/dgmaxx/shop/wx/product/info/list/v2'
+const url = '/product/info/list' // 只传入部分路径
 
 
 const future = Math.floor(new Date().getTime() / 1000) + 60 * 60 * (14 + 24)
@@ -694,18 +694,20 @@ router.get(url, (req, res) => {
       ],
     },
   };
+  // 上面的是原始的线上数据，在上面的基础上增加数据
   list.data.products = list.data.products.map(item => {
-    // item.futureTips = futureTips
+    item.futureTips = futureTips
     item.couponFavPrice = '24'
     return item
   })
   res.json(list)
 });
 
-// 代理
+// 代理，线上商品列表的所有价格改为666，券后价18
 const proxy = data => {
   data.data.products = data.data.products.map(item => {
     item.couponFavPrice = '18'
+    item.salePrice = '666'
     return item
   })
 }

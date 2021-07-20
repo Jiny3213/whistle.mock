@@ -3,35 +3,24 @@
 var express = require("express");
 var router = express.Router();
 const httpProxy = require('express-http-proxy')
-
+const { host } = require('../memoizeHost')
 const url = '/vposRoutePostSUP' // 要 mock 的接口
 
 const proxy = data => {}
 
-let proxyHost = ''
-function getProxy() {
-  return proxyHost
-}
 router.post(url, (req, res, next) => {
   const { serviceName } = req.body
   // 对特定对方法返回 mock 数据
   if (serviceName === 'LotteryActOspService.queryLotteryActPage') {
     const response = {
-      a: 222
+      data: 'test'
     }
     res.json(response)
   } else {
     // 其他方法进行透明代理
-    proxyHost = req.originalReq.headers.host
     next()
   }
-}, httpProxy(getProxy, {
-  userResDecorator: function(proxyRes, proxyResData, userReq, userRes) {
-    let data = JSON.parse(proxyResData.toString('utf8'));
-    data.globalProxy = 'good xup'
-    return JSON.stringify(data);
-  }
-}))
+}, httpProxy(host.getHost.bind(host)))
 
 module.exports = {
   type: 'router', // router or proxy

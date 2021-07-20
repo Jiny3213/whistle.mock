@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
-const url = "/vips-mobile/dgmaxx/shop/wx/product/detail/v2"
-const future = Math.floor(new Date().getTime() / 1000) + 60 * 60 * (14 + 24)
+const url = "/vips-mobile/dgmaxx/shop/wx/product/detail/v2";
+const future = Math.floor(new Date().getTime() / 1000) + 60 * 60 * (14 + 24);
 const futureTips = {
   priceTitle: "清仓价",
   futurePrice: "22",
@@ -531,7 +531,7 @@ router.get(url, (req, res) => {
             },
             hasLowPrice: false,
           },
-          
+
           salePriceState: 1,
           sizeDetailId: "280165175",
           isWarmup: "0",
@@ -879,17 +879,17 @@ router.get(url, (req, res) => {
               isQuota: false,
             },
           },
-          "tips": [
+          tips: [
             {
-               "isFuture": 0,
-               "typeId": "2",
-               "type": "满减",
-               "tips": "常态满减活动提示语",
-               "activityNo": "02100000900000159635",
-               "startTime": "1591603824",
-               "endTime": "1592467134"
-            }
-         ],
+              isFuture: 0,
+              typeId: "2",
+              type: "满减",
+              tips: "常态满减活动提示语",
+              activityNo: "02100000900000159635",
+              startTime: "1591603824",
+              endTime: "1592467134",
+            },
+          ],
           isImpending: 0,
         },
         "6919220176086984086": {
@@ -911,17 +911,17 @@ router.get(url, (req, res) => {
               isQuota: false,
             },
           },
-          "tips": [
+          tips: [
             {
-               "isFuture": 0,
-               "typeId": "2",
-               "type": "满减",
-               "tips": "常态满减活动提示语",
-               "activityNo": "02100000900000159635",
-               "startTime": "1591603824",
-               "endTime": "1592467134"
-            }
-         ],
+              isFuture: 0,
+              typeId: "2",
+              type: "满减",
+              tips: "常态满减活动提示语",
+              activityNo: "02100000900000159635",
+              startTime: "1591603824",
+              endTime: "1592467134",
+            },
+          ],
           isImpending: 0,
         },
       },
@@ -1001,20 +1001,23 @@ router.get(url, (req, res) => {
       },
     },
   };
-  for(let key of Object.keys(detail.data.skus)) {
-    detail.data.skus[key].futureTips = futureTips
+  // skus
+  for (let key of Object.keys(detail.data.skus)) {
+    detail.data.skus[key].futureTips = futureTips;
+    detail.data.skus[key].price.couponFavPrice = "22";
   }
-  for(let key of Object.keys(detail.data.mids)) {
-    // detail.data.mids[key].futureTips = futureTips
-    detail.data.mids[key].price.couponFavPrice = '22'
-    // detail.data.mids[key].price.salePriceInfo.price = '2722'
-    // detail.data.mids[key].price.salePriceInfo = null
+  // mids
+  for (let key of Object.keys(detail.data.mids)) {
+    detail.data.mids[key].futureTips = futureTips
+    detail.data.mids[key].price.couponFavPrice = "22";
+    detail.data.mids[key].price.salePriceInfo = null;
   }
-  res.json(detail)
+  res.json(detail);
 });
 
 module.exports = {
-  type: 'router', // 选择模式 router or proxy
+  type: "router", // 选择模式 router or proxy
   url,
   router: router,
+  proxy: () => {},
 };

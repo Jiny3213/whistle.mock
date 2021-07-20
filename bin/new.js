@@ -14,7 +14,7 @@ inquirer.prompt([
   {
     type: 'input',
     name: 'url',
-    message: '输入接口url或通配符'
+    message: '输入接口url(部分或完整路径)'
   },
   {
     type: 'list',

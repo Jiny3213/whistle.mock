@@ -1,7 +1,6 @@
 const config = {
-  // api 文件包含，填绝对路径，未能实现
-  // include: ['/Users/cxy/mock']
+  //  自动引入配置文件
+  include: ['/mock/api', '/mock/example']
 }
-
 
 module.exports = config

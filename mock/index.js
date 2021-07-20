@@ -5,6 +5,8 @@ const path = require('path')
 const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const { host, hostMiddleware } = require('./memoizeHost')
+const config = require('./config')
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -16,43 +18,27 @@ app.use(cors({
   optionsSuccessStatus: 200,
   credentials: true
 }))
-// 自动引入api，必须写在./api目录中
-const dir = path.join(__dirname, './api')
-let files = fs.readdirSync(dir)
-files = files.map(item => {
-  return require(path.join(__dirname, './api', item))
-})
-const proxyList = files.filter(item => item.type === 'proxy')
-const routerList = files.filter(item => item.type === 'router')
-let proxyMap = {} // 以后增加重复key报错功能
-for(let item of proxyList) {
-  proxyMap[item.url] = item.proxy
+// 自动引入api
+let mockList = []
+for(apiDir of config.include) {
+  filenameList = fs.readdirSync(path.join(__dirname, '../', apiDir))
+  mockList = mockList.concat(filenameList.map(filename => {
+    return require(path.join(__dirname, '../', apiDir, filename))
+  }))
 }
+const proxyList = mockList.filter(item => item.type === 'proxy')
+const routerList = mockList.filter(item => item.type === 'router')
 
-// 动态获取 host
-let proxyHost = '' 
-function getProxy() {
-  return proxyHost
-}
-
-// 记录当前url
-let currentUrl = ''
-
-// 获取 host 中间件
-var memoizeHost = function (req, res, next) {
-  proxyHost = req.originalReq.headers.host
-  next()
-}
-
-app.use(memoizeHost)
+app.use(hostMiddleware)
 
 // 代理服务
 // https://github.com/villadora/express-http-proxy
-app.use('/', proxy(getProxy, {
+app.use('/', proxy(host.getHost.bind(host), {
+  proxyIndex: 0,
   filter: function(req, res) {
-    for(let item of proxyList) {
-      if(new RegExp(item.url).test(req.url)) {
-        currentUrl = item.url
+    for(let i in proxyList) {
+      if(new RegExp(proxyList[i].url).test(req.url)) {
+        this.proxyIndex = i
         return true
       }
     }
@@ -62,7 +48,8 @@ app.use('/', proxy(getProxy, {
     let data = JSON.parse(proxyResData.toString('utf8'));
     // 执行代理逻辑
     // data.globalProxy = '此数据被增加了字段, 可以通过这种方式增删返回数据的字段, 这是全局修改的'
-    const resData = proxyMap[currentUrl](data) || data
+    const handleData = proxyList[this.proxyIndex].proxy
+    const resData = handleData && handleData(data) || data
     return JSON.stringify(resData);
   }
 }))
@@ -71,5 +58,12 @@ app.use('/', proxy(getProxy, {
 for(item of routerList) {
   app.use(item.router)
 }
+
+// 兜底提示，没有配置但又把请求发到了插件
+app.use('*', function(req, res, next) {
+  res.json({
+    error: '请配置mock规则，未找到此请求对应的处理规则'
+  })
+})
 
 module.exports = app  

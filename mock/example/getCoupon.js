@@ -1,7 +1,7 @@
 // mock 模版文件
 var express = require("express");
 var router = express.Router();
-const url = '/vips-mobile/wpcjx/wx/coupon/batchGetVipCouponInfo' // 要 mock 的接口，去除host的部分
+const url = '/vips-mobile/wpcjx/wx/coupon/batchGetVipCouponInfo'
 
 router.get(url, (req, res) => {
   const data = {
@@ -29,7 +29,7 @@ router.get(url, (req, res) => {
       }
     }
   }
-  // 改写数据
+  // 改写数据，为以下商品增加券
   const productIdList = [
     '6919321468615738437',
     '6919278305127518294',
