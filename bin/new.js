@@ -14,7 +14,7 @@ inquirer.prompt([
   {
     type: 'input',
     name: 'url',
-    message: '输入接口url(部分或完整路径)'
+    message: '输入接口路径(完整路径，host后面的部分，以/开头)'
   },
   {
     type: 'list',
@@ -28,7 +28,6 @@ inquirer.prompt([
   if (!/\.js$/.test(filename)) {
     filename += '.js'
   }
-  console.log('你的接口是', url, '你的文件名是', filename, '.js')
   let template = fs.readFileSync(path.join(__dirname, '../mock/example/template.js'), 'utf8')
   template = template.replace('$url', url).replace('$type', type)
   let writePath = path.join(__dirname, `../mock/api/${filename}`)
