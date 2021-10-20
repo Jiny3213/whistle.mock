@@ -16,6 +16,7 @@ whistle mock 插件，可以利用js来改变mock的数据。
   1. `w2 start` 正常开启 whistle
   2. 在插件目录下运行`w2 run`开启 whistle 的同时可以查看插件输出（如console.log）
 - `npm run watch` 开启热更新，监听插件修改的变化，否则不会更新你修改的内容
+- `npm install lack -g` 不知道啥原因，本地安装的lack使用上面的方式不能监听变更，此时要全局安装lack，然后运行 `lack watch` 
 - 创建mock模版，/mock/api 中的js文件会被自动引入
   1. `npm run new` 根据指引创建模版文件(推荐)
   2. 参考/mock/example/template模版，在/mock/api中新建js文件
@@ -46,3 +47,4 @@ whistle mock 插件，可以利用js来改变mock的数据。
 > 参考链接
 > whistle 插件开发 http://wproxy.org/whistle/plugins.html
 > express 文档
+> whistle 插件开发工具 https://github.com/avwo/lack 
