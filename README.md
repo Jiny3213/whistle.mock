@@ -9,7 +9,8 @@ whistle mock 插件，可以利用js来改变mock的数据。
 
 ## 首次使用，安装插件
 - 如果正在运行 whistle，先`w2 stop`停止其运行
-- 在插件目录下运行 `w2 run` 加载本插件到 whistle 的插件列表
+- 执行 `npm link` 将插件link到全局，这样可以在 whistle 界面的 Plugins 列表看到此插件
+- 重新运行 whistle
 
 ## 常规使用
 - whistle 有两种打开方式
