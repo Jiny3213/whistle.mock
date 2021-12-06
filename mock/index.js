@@ -21,10 +21,15 @@ app.use(cors({
 // 自动引入api
 let mockList = []
 for(apiDir of config.include) {
-  filenameList = fs.readdirSync(path.join(__dirname, '../', apiDir))
-  mockList = mockList.concat(filenameList.map(filename => {
-    return require(path.join(__dirname, '../', apiDir, filename))
-  }))
+  try {
+    filenameList = fs.readdirSync(path.join(__dirname, '../', apiDir))
+    mockList = mockList.concat(filenameList.map(filename => {
+      return require(path.join(__dirname, '../', apiDir, filename))
+    }))
+  } catch(err) {
+    // 没有找到文件
+    console.log(err)
+  }
 }
 const proxyList = mockList.filter(item => item.type === 'proxy')
 const routerList = mockList.filter(item => item.type === 'router')
@@ -46,12 +51,23 @@ app.use('/', proxy(host.getHost.bind(host), {
   },
   userResDecorator: function(proxyRes, proxyResData, userReq, userRes) {
     let data = JSON.parse(proxyResData.toString('utf8'));
+    // console.log(proxyRes._header.cookie)
     // 执行代理逻辑
     // data.globalProxy = '此数据被增加了字段, 可以通过这种方式增删返回数据的字段, 这是全局修改的'
     const handleData = proxyList[this.proxyIndex].proxy
     const resData = handleData && handleData(data) || data
     return JSON.stringify(resData);
-  }
+  },
+  // 获取响应头
+  // userResHeaderDecorator(headers, userReq, userRes, proxyReq, proxyRes) {
+  //   console.log(headers)
+  //   return headers
+  // },
+  // 获取请求头
+  // proxyReqOptDecorator: function(proxyReqOpts, srcReq) {
+  //   console.log(proxyReqOpts.headers['cookie'])
+  //   return proxyReqOpts;
+  // }
 }))
 
 // 加载 router
