@@ -1,12 +1,10 @@
-// xup 请求同一个接口，根据请求体不同（带有不同的方法名），获取不同的数据
+// 代理 JSON-RPC 风格的接口
 // 当命中指定方法名时，返回mock数据，未命中时使用代理服务进行透明代理
 var express = require("express");
 var router = express.Router();
 const httpProxy = require('express-http-proxy')
 const { host } = require('../memoizeHost')
-const url = '/vposRoutePostSUP' // 要 mock 的接口
-
-const proxy = data => {}
+const url = '/jsonRpc' // 要 mock 的接口
 
 router.post(url, (req, res, next) => {
   const { serviceName } = req.body
@@ -20,13 +18,12 @@ router.post(url, (req, res, next) => {
     // 其他方法进行透明代理
     next()
   }
-}, httpProxy(host.getHost.bind(host)))
+}, /*透明代理*/httpProxy(host.getHost.bind(host)))
 
 module.exports = {
   type: 'router', // router or proxy
   url,
-  router: router,
-  proxy: proxy
+  router: router
 };
 
 

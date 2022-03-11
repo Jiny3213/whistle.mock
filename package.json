@@ -1,7 +1,7 @@
 {
   "name": "whistle.mock",
   "version": "1.0.0",
-  "description": "用js修改mock数据",
+  "description": "whistle-mock插件",
   "scripts": {
     "watch": "lack watch mock",
     "new": "node ./bin/new.js"
@@ -19,6 +19,7 @@
     "koa-onerror": "^4.1.0",
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
-    "lack": "^1.2.0"
+    "lack": "^1.2.0",
+    "mockjs": "^1.1.0"
   }
 }

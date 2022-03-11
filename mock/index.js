@@ -10,7 +10,7 @@ const config = require('./config')
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-// 解决xup跨域问题
+// 解决跨域问题
 app.use(cors({
   origin: true,
   methods: ['GET', 'POST', 'OPTIONS'],
@@ -51,23 +51,11 @@ app.use('/', proxy(host.getHost.bind(host), {
   },
   userResDecorator: function(proxyRes, proxyResData, userReq, userRes) {
     let data = JSON.parse(proxyResData.toString('utf8'));
-    // console.log(proxyRes._header.cookie)
-    // 执行代理逻辑
-    // data.globalProxy = '此数据被增加了字段, 可以通过这种方式增删返回数据的字段, 这是全局修改的'
+    // 执行用户的数据修改方法
     const handleData = proxyList[this.proxyIndex].proxy
     const resData = handleData && handleData(data) || data
     return JSON.stringify(resData);
   },
-  // 获取响应头
-  // userResHeaderDecorator(headers, userReq, userRes, proxyReq, proxyRes) {
-  //   console.log(headers)
-  //   return headers
-  // },
-  // 获取请求头
-  // proxyReqOptDecorator: function(proxyReqOpts, srcReq) {
-  //   console.log(proxyReqOpts.headers['cookie'])
-  //   return proxyReqOpts;
-  // }
 }))
 
 // 加载 router

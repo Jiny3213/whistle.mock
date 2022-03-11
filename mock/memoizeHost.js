@@ -1,3 +1,4 @@
+// 记录host
 class Host {
   constructor() {
     this._host = ''
