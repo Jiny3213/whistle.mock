@@ -31,12 +31,22 @@ inquirer.prompt([
   let template = fs.readFileSync(path.join(__dirname, '../mock/example/template.js'), 'utf8')
   template = template.replace('$url', url).replace('$type', type)
   let writePath = path.join(__dirname, `../mock/api/${filename}`)
-  fs.writeFile(writePath, template, 'utf8', err => {
-    if (err) {
-      console.log(err)
-    } else {
-      console.log(chalk.green('mock文件创建成功!'))
-      console.log(chalk.green(`==============> /mock/api/${filename}`))
-    }
-  })
+
+  
+  function write() {
+    fs.writeFile(writePath, template, 'utf8', err => {
+      if(err) {
+        if(err.code === 'ENOENT') {
+          fs.mkdirSync(path.join(__dirname, `../mock/api`))
+          write()
+        } else {
+          console.log(err)
+        }
+      } else {
+        console.log(chalk.green('mock文件创建成功!'))
+        console.log(chalk.green(`==============> /mock/api/${filename}`))
+      }
+    })
+  }
+  write()
 })

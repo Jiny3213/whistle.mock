@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "用js修改mock数据",
   "scripts": {
-    "watch": "lack watch",
+    "watch": "lack watch mock",
     "new": "node ./bin/new.js"
   },
   "dependencies": {
